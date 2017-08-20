@@ -7,6 +7,7 @@ import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.InputEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
+import cpw.mods.fml.common.network.FMLNetworkEvent;
 import me.yario.blsquad.commands.*;
 import me.yario.blsquad.gui.*;
 import net.minecraft.client.Minecraft;
@@ -46,6 +47,42 @@ public class BlSquadMain {
     public static boolean openKickGui;
     public static boolean openFreezeGui;
 
+    @SubscribeEvent
+    public void onJoin(FMLNetworkEvent.ClientConnectedToServerEvent event)
+    {
+        try {
+            if(mc.func_147104_D() != null) {
+                String permCmdString = BlSquadMain.getSettings().getCommandByServer(mc.func_147104_D().serverIP);
+                String tempCmdString = BlSquadMain.getSettings().getTempCommandByServer(mc.func_147104_D().serverIP);
+                String warnPermCmdString = BlSquadMain.getSettings().getWarnCommandByServer(mc.func_147104_D().serverIP);
+                String kickPermCmdString = BlSquadMain.getSettings().getKickCommandByServer(mc.func_147104_D().serverIP);
+                String mutePermCmdString = BlSquadMain.getSettings().getMuteCommandByServer(mc.func_147104_D().serverIP);
+                String muteTempCmdString = BlSquadMain.getSettings().getTempMuteCommandByServer(mc.func_147104_D().serverIP);
+                String freezeCmdString = BlSquadMain.getSettings().getFreezeCommandByServer(mc.func_147104_D().serverIP);
+                String unfreezeCmdString = BlSquadMain.getSettings().getUnfreezeCommandByServer(mc.func_147104_D().serverIP);
+                if (permCmdString == null)
+                    BlSquadMain.getSettings().setServerForCommand(mc.func_147104_D().serverIP, "/ban &name &reason");
+                if (tempCmdString == null)
+                    BlSquadMain.getSettings().setServerForTempCommand(mc.func_147104_D().serverIP, "/ban &name &date &reason");
+                if (warnPermCmdString == null)
+                    BlSquadMain.getSettings().setServerForWarnCommand(mc.func_147104_D().serverIP, "/warn &name &reason");
+                if (kickPermCmdString == null)
+                    BlSquadMain.getSettings().setServerForKickCommand(mc.func_147104_D().serverIP, "/kick &name &reason");
+                if (mutePermCmdString == null)
+                    BlSquadMain.getSettings().setServerForMuteCommand(mc.func_147104_D().serverIP, "/mute &name &reason");
+                if (muteTempCmdString == null)
+                    BlSquadMain.getSettings().setServerForTempMuteCommand(mc.func_147104_D().serverIP, "/tempmute &name &date &reason");
+                if (freezeCmdString == null)
+                    BlSquadMain.getSettings().setServerForFreezeCommand(mc.func_147104_D().serverIP, "/freeze &name");
+                if (unfreezeCmdString == null)
+                    BlSquadMain.getSettings().setServerForUnfreezeCommand(mc.func_147104_D().serverIP, "/unfreeze &name");
+            }
+
+        } catch (IOException e)
+        {
+            e.printStackTrace();
+        }
+    }
 
     @SubscribeEvent
     public void onChat(ClientChatReceivedEvent event)
@@ -169,8 +206,8 @@ public class BlSquadMain {
                     mc.thePlayer.sendChatMessage(getSettings().getFreezeCommandByServer(mc.func_147104_D().serverIP).replace("&name", mc.pointedEntity instanceof EntityPlayer ? ((EntityPlayer) mc.pointedEntity).getDisplayName() : ""));
             }
             if (unfreezeKey.isPressed() && getSettings().getCheckBox("enableKeys")) {
-                if(!getSettings().getCheckBox("freezePlayer"))
-                    mc.displayGuiScreen(new GuiFreezePlayer(mc.pointedEntity instanceof EntityPlayer && getSettings().getCheckBox("checkPlayer") ? ((EntityPlayer) mc.pointedEntity).getDisplayName() : ""));
+                if(!getSettings().getCheckBox("freezePlayer") && mc.pointedEntity instanceof EntityPlayer && getSettings().getCheckBox("checkPlayer"))
+                    mc.displayGuiScreen(new GuiFreezePlayer(((EntityPlayer) mc.pointedEntity).getDisplayName()));
                 else if(mc.func_147104_D() != null)
                     mc.thePlayer.sendChatMessage(getSettings().getUnfreezeCommandByServer(mc.func_147104_D().serverIP).replace("&name",mc.pointedEntity instanceof EntityPlayer ? ((EntityPlayer) mc.pointedEntity).getDisplayName() : ""));
             }

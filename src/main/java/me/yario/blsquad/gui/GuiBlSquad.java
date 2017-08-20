@@ -54,8 +54,6 @@ public class GuiBlSquad extends GuiScreen{
 
     @Override
     public void initGui() {
-
-
         try {
             if(mc.func_147104_D() != null) {
                 String permCmdString = BlSquadMain.getSettings().getCommandByServer(mc.func_147104_D().serverIP);
