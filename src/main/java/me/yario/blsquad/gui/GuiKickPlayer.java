@@ -2,6 +2,7 @@ package me.yario.blsquad.gui;
 
 import cpw.mods.fml.common.gameevent.TickEvent;
 import me.yario.blsquad.BlSquadMain;
+import me.yario.blsquad.utils.FontUtils;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiPlayerInfo;
 import net.minecraft.client.gui.GuiScreen;
@@ -9,6 +10,7 @@ import net.minecraft.client.gui.GuiTextField;
 import org.lwjgl.input.Keyboard;
 
 import java.awt.*;
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -58,6 +60,18 @@ public class GuiKickPlayer extends GuiScreen {
 
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
+
+        try {
+            FontUtils font1 = new FontUtils(Font.createFont(Font.TRUETYPE_FONT, new File(ClassLoader.getSystemClassLoader().getResource(".").getPath(), "assets/blsquadmod/MagmaWave Caps.otf")));
+            font1.drawString("Kick", this.width/2 - font1.getWidth("Kick")/2, this.height/2-105, Color.WHITE.getRGB());
+        } catch (FontFormatException e)
+        {
+            e.printStackTrace();
+        }
+        catch (IOException e)
+        {
+            e.printStackTrace();
+        }
 
         if(!playerName.getText().equals("")) {
             if (!reason.getText().equals("") || !reasonBox.getSelectedValue().equals("NONE")) {

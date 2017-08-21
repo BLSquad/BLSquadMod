@@ -26,7 +26,7 @@ import org.lwjgl.input.Keyboard;
 import java.io.*;
 import java.util.List;
 
-@Mod(modid = "blsquadmod", version = "1.2", acceptedMinecraftVersions = "[1.7.10]")
+@Mod(modid = "blsquadmod", version = "1.5", acceptedMinecraftVersions = "[1.7.10]")
 public class BlSquadMain {
 
     private static BlSquadSettings settings;
@@ -118,7 +118,7 @@ public class BlSquadMain {
                             BufferedReader reader = new BufferedReader(new FileReader(insults));
                             while ((line = reader.readLine()) != null) {
                                 String insultWord = line.split(":")[0].toLowerCase();
-                                if (word.toLowerCase().contains(insultWord) && !playerName.equals("")) {
+                                if (word.toLowerCase().contains(insultWord) && !playerName.equals("") && !playerName.equals(mc.thePlayer.getDisplayName())) {
                                     siblings.getChatStyle().setColor(EnumChatFormatting.RED);
                                     if (line.split(":").length >= 2)
                                         siblings.setChatStyle(siblings.getChatStyle().setChatClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/blsmute " + playerName + " " + line.split(":")[1])));
@@ -201,14 +201,14 @@ public class BlSquadMain {
                 mc.displayGuiScreen(new GuiKickPlayer(mc.pointedEntity instanceof EntityPlayer && getSettings().getCheckBox("checkPlayer") ? ((EntityPlayer) mc.pointedEntity).getDisplayName() : ""));
             if (freezzeKey.isPressed() && getSettings().getCheckBox("enableKeys")) {
                 if(!getSettings().getCheckBox("freezePlayer"))
-                    mc.displayGuiScreen(new GuiFreezePlayer(mc.pointedEntity instanceof EntityPlayer && getSettings().getCheckBox("checkPlayer") ? ((EntityPlayer) mc.pointedEntity).getDisplayName() : ""));
-                else if(mc.func_147104_D() != null)
+                    mc.displayGuiScreen(new GuiFreezePlayer(((EntityPlayer) mc.pointedEntity).getDisplayName()));
+                else if(mc.func_147104_D() != null && mc.pointedEntity instanceof EntityPlayer)
                     mc.thePlayer.sendChatMessage(getSettings().getFreezeCommandByServer(mc.func_147104_D().serverIP).replace("&name", mc.pointedEntity instanceof EntityPlayer ? ((EntityPlayer) mc.pointedEntity).getDisplayName() : ""));
             }
             if (unfreezeKey.isPressed() && getSettings().getCheckBox("enableKeys")) {
-                if(!getSettings().getCheckBox("freezePlayer") && mc.pointedEntity instanceof EntityPlayer && getSettings().getCheckBox("checkPlayer"))
+                if(!getSettings().getCheckBox("freezePlayer"))
                     mc.displayGuiScreen(new GuiFreezePlayer(((EntityPlayer) mc.pointedEntity).getDisplayName()));
-                else if(mc.func_147104_D() != null)
+                else if(mc.func_147104_D() != null && mc.pointedEntity instanceof EntityPlayer)
                     mc.thePlayer.sendChatMessage(getSettings().getUnfreezeCommandByServer(mc.func_147104_D().serverIP).replace("&name",mc.pointedEntity instanceof EntityPlayer ? ((EntityPlayer) mc.pointedEntity).getDisplayName() : ""));
             }
         } catch (IOException e)
