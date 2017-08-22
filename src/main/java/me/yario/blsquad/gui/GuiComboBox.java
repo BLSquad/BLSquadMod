@@ -126,7 +126,7 @@ public class GuiComboBox extends Gui {
                     }
                 }
 
-                if (m < 0 && startAt < values.size() - 7) {
+                if (m < 0 && startAt < values.size() - 6) {
                     int mouseX = this.mouseX;
                     int mouseY = this.mouseY;
 

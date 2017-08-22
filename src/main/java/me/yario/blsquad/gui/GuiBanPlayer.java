@@ -303,8 +303,8 @@ public class GuiBanPlayer extends GuiScreen {
         reasonValues.add("Racism");
         reasonValues.add("Forbidden adversiting");
         reasonValues.add("Forbidden link");
-        reasonValues.add("Usebug");
         reasonValues.add("Ban Evading");
+        reasonValues.add("Usebug");
         reasonBox = new GuiComboBox(this.width/2+4, this.height/2-16, 200, 20,cheatingReasonValues);
         reasonBox.addValues(reasonValues);
         ban = new GuiButton(0, this.width/2-97, this.height/2 + this.mc.fontRenderer.FONT_HEIGHT +2, 98, 20, "Ban this player");
