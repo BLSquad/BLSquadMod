@@ -11,7 +11,6 @@ import net.minecraft.client.gui.GuiTextField;
 import org.lwjgl.input.Keyboard;
 
 import java.awt.*;
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -97,7 +96,7 @@ public class GuiBanPlayer extends GuiScreen {
             ban.enabled = false;
 
         try {
-            FontUtils font1 = new FontUtils(Font.createFont(Font.TRUETYPE_FONT, new File(ClassLoader.getSystemClassLoader().getResource(".").getPath(), "assets/blsquadmod/MagmaWave Caps.otf")));
+            FontUtils font1 = new FontUtils(Font.createFont(Font.TRUETYPE_FONT, getClass().getResourceAsStream("/assets/blsquadmod/MagmaWaveCaps.otf")));
             font1.drawString("Ban", this.width/2 - font1.getWidth("Ban")/2, this.height/2-105, Color.WHITE.getRGB());
         } catch (FontFormatException e)
         {

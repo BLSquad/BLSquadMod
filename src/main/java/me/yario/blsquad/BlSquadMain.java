@@ -201,15 +201,15 @@ public class BlSquadMain {
                 mc.displayGuiScreen(new GuiKickPlayer(mc.pointedEntity instanceof EntityPlayer && getSettings().getCheckBox("checkPlayer") ? ((EntityPlayer) mc.pointedEntity).getDisplayName() : ""));
             if (freezzeKey.isPressed() && getSettings().getCheckBox("enableKeys")) {
                 if(!getSettings().getCheckBox("freezePlayer"))
-                    mc.displayGuiScreen(new GuiFreezePlayer(((EntityPlayer) mc.pointedEntity).getDisplayName()));
+                    mc.displayGuiScreen(new GuiFreezePlayer(mc.pointedEntity instanceof EntityPlayer ? ((EntityPlayer) mc.pointedEntity).getDisplayName() : ""));
                 else if(mc.func_147104_D() != null && mc.pointedEntity instanceof EntityPlayer)
-                    mc.thePlayer.sendChatMessage(getSettings().getFreezeCommandByServer(mc.func_147104_D().serverIP).replace("&name", mc.pointedEntity instanceof EntityPlayer ? ((EntityPlayer) mc.pointedEntity).getDisplayName() : ""));
+                    mc.thePlayer.sendChatMessage(getSettings().getFreezeCommandByServer(mc.func_147104_D().serverIP).replace("&name", ((EntityPlayer) mc.pointedEntity).getDisplayName()));
             }
             if (unfreezeKey.isPressed() && getSettings().getCheckBox("enableKeys")) {
                 if(!getSettings().getCheckBox("freezePlayer"))
-                    mc.displayGuiScreen(new GuiFreezePlayer(((EntityPlayer) mc.pointedEntity).getDisplayName()));
+                    mc.displayGuiScreen(new GuiFreezePlayer(mc.pointedEntity instanceof EntityPlayer ? ((EntityPlayer) mc.pointedEntity).getDisplayName() : ""));
                 else if(mc.func_147104_D() != null && mc.pointedEntity instanceof EntityPlayer)
-                    mc.thePlayer.sendChatMessage(getSettings().getUnfreezeCommandByServer(mc.func_147104_D().serverIP).replace("&name",mc.pointedEntity instanceof EntityPlayer ? ((EntityPlayer) mc.pointedEntity).getDisplayName() : ""));
+                    mc.thePlayer.sendChatMessage(getSettings().getUnfreezeCommandByServer(mc.func_147104_D().serverIP).replace("&name", ((EntityPlayer) mc.pointedEntity).getDisplayName()));
             }
         } catch (IOException e)
         {
