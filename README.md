@@ -1,2 +1,2 @@
 # BLSquadMod
-Modeartion plugin.
+Moderation plugin.
