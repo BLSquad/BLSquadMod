@@ -2,7 +2,6 @@ package me.yario.blsquad.gui;
 
 import cpw.mods.fml.common.gameevent.TickEvent;
 import me.yario.blsquad.BlSquadMain;
-import me.yario.blsquad.utils.FontUtils;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiPlayerInfo;
 import net.minecraft.client.gui.GuiScreen;
@@ -58,17 +57,7 @@ public class GuiFreezePlayer extends GuiScreen {
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
 
 
-        try {
-            FontUtils font1 = new FontUtils(Font.createFont(Font.TRUETYPE_FONT, getClass().getResourceAsStream("/assets/blsquadmod/MagmaWaveCaps.otf")));
-            font1.drawString("Freeze", this.width/2 - font1.getWidth("Freeze")/2, this.height/2-105, Color.WHITE.getRGB());
-        } catch (FontFormatException e)
-        {
-            e.printStackTrace();
-        }
-        catch (IOException e)
-        {
-            e.printStackTrace();
-        }
+        BlSquadMain.font.drawString("Freeze", this.width/2 - BlSquadMain.font.getWidth("Freeze")/2, this.height/2-105, Color.WHITE.getRGB());
         if(!playerName.getText().equals(""))
         {
             freeze.enabled = true;

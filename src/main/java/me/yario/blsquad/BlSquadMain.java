@@ -10,6 +10,7 @@ import cpw.mods.fml.common.gameevent.TickEvent;
 import cpw.mods.fml.common.network.FMLNetworkEvent;
 import me.yario.blsquad.commands.*;
 import me.yario.blsquad.gui.*;
+import me.yario.blsquad.utils.FontUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiPlayerInfo;
 import net.minecraft.client.settings.KeyBinding;
@@ -23,12 +24,14 @@ import net.minecraftforge.client.event.ClientChatReceivedEvent;
 import net.minecraftforge.common.MinecraftForge;
 import org.lwjgl.input.Keyboard;
 
+import java.awt.*;
 import java.io.*;
 import java.util.List;
 
 @Mod(modid = "blsquadmod", version = "1.5", acceptedMinecraftVersions = "[1.7.10]")
 public class BlSquadMain {
 
+    public static FontUtils font;
     private static BlSquadSettings settings;
     private static KeyBinding guiKey;
     private static KeyBinding banKey;
@@ -87,59 +90,60 @@ public class BlSquadMain {
     @SubscribeEvent
     public void onChat(ClientChatReceivedEvent event)
     {
-        try {
-            if (getSettings().getCheckBox("muteMessage")) {
-                File insults = new File(mc.mcDataDir, "insults.txt");
-                if (!insults.exists()) {
-                    try {
-                        insults.createNewFile();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
-                boolean nameFounded = false;
-                String playerName = "";
-                IChatComponent message = event.message;
-                IChatComponent newMesagge = new ChatComponentText("");
-                for (Object siblingsObject : message.getSiblings()) {
-                    IChatComponent siblings = (IChatComponent) siblingsObject;
-                    if (!nameFounded) {
-                        for (GuiPlayerInfo playerInfo : (List<GuiPlayerInfo>) mc.getNetHandler().playerInfoList) {
-                            if (siblings.getFormattedText().contains(playerInfo.name)) {
-                                playerName = playerInfo.name;
-                                nameFounded = true;
-                                break;
-                            }
-                        }
-                    }
-                    for (String word : siblings.getFormattedText().split(" ")) {
+        if(mc.func_147104_D() != null) {
+            try {
+                if (getSettings().getCheckBox("muteMessage")) {
+                    File insults = new File(mc.mcDataDir, "insults.txt");
+                    if (!insults.exists()) {
                         try {
-                            String line;
-                            BufferedReader reader = new BufferedReader(new FileReader(insults));
-                            while ((line = reader.readLine()) != null) {
-                                String insultWord = line.split(":")[0].toLowerCase();
-                                if (word.toLowerCase().contains(insultWord) && !playerName.equals("") && !playerName.equals(mc.thePlayer.getDisplayName())) {
-                                    siblings.getChatStyle().setColor(EnumChatFormatting.RED);
-                                    if (line.split(":").length >= 2)
-                                        siblings.setChatStyle(siblings.getChatStyle().setChatClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/blsmute " + playerName + " " + line.split(":")[1])));
-                                    else
-                                        siblings.setChatStyle(siblings.getChatStyle().setChatClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/blsmute " + playerName)));
-                                    break;
-                                }
-                            }
-                            reader.close();
-                        } catch (FileNotFoundException e) {
-                            e.printStackTrace();
+                            insults.createNewFile();
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
                     }
-                    newMesagge.appendSibling(siblings);
+                    boolean nameFounded = false;
+                    String playerName = "";
+                    IChatComponent message = event.message;
+                    IChatComponent newMesagge = new ChatComponentText("");
+                    for (Object siblingsObject : message.getSiblings()) {
+                        IChatComponent siblings = (IChatComponent) siblingsObject;
+                        if (!nameFounded) {
+                            for (GuiPlayerInfo playerInfo : (List<GuiPlayerInfo>) mc.getNetHandler().playerInfoList) {
+                                if (siblings.getFormattedText().contains(playerInfo.name)) {
+                                    playerName = playerInfo.name;
+                                    nameFounded = true;
+                                    break;
+                                }
+                            }
+                        }
+                        for (String word : siblings.getFormattedText().split(" ")) {
+                            try {
+                                String line;
+                                BufferedReader reader = new BufferedReader(new FileReader(insults));
+                                while ((line = reader.readLine()) != null) {
+                                    String insultWord = line.split(":")[0].toLowerCase();
+                                    if (word.toLowerCase().contains(insultWord) && !playerName.equals("") && !playerName.equals(mc.thePlayer.getDisplayName())) {
+                                        siblings.getChatStyle().setColor(EnumChatFormatting.RED);
+                                        if (line.split(":").length >= 2)
+                                            siblings.setChatStyle(siblings.getChatStyle().setChatClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/blsmute " + playerName + " " + line.split(":")[1])));
+                                        else
+                                            siblings.setChatStyle(siblings.getChatStyle().setChatClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/blsmute " + playerName)));
+                                        break;
+                                    }
+                                }
+                                reader.close();
+                            } catch (FileNotFoundException e) {
+                                e.printStackTrace();
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                        newMesagge.appendSibling(siblings);
+                    }
                 }
+            } catch (IOException e) {
+                e.printStackTrace();
             }
-        } catch (IOException e)
-        {
-            e.printStackTrace();
         }
     }
 
@@ -147,6 +151,7 @@ public class BlSquadMain {
     public void init(FMLInitializationEvent event)
     {
         try {
+            font = new FontUtils(Font.createFont(Font.TRUETYPE_FONT, getClass().getResourceAsStream("/assets/blsquadmod/MagmaWaveCaps.otf")));
             settings = new BlSquadSettings(new File(mc.mcDataDir.getPath(), "blsquadmod.cfg"));
             if (getSettings().getCheckBox("enableKeys") == null)
                 getSettings().saveCheckBox("enableKeys", true);
@@ -158,6 +163,10 @@ public class BlSquadMain {
                 getSettings().saveCheckBox("muteMessage", true);
         }
         catch (IOException e)
+        {
+            e.printStackTrace();
+        }
+        catch(FontFormatException e)
         {
             e.printStackTrace();
         }

@@ -2,7 +2,6 @@ package me.yario.blsquad.gui;
 
 import cpw.mods.fml.common.gameevent.TickEvent;
 import me.yario.blsquad.BlSquadMain;
-import me.yario.blsquad.utils.FontUtils;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiPlayerInfo;
 import net.minecraft.client.gui.GuiScreen;
@@ -58,18 +57,7 @@ public class GuiWarnPlayer extends GuiScreen {
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks) {
 
-
-        try {
-            FontUtils font1 = new FontUtils(Font.createFont(Font.TRUETYPE_FONT, getClass().getResourceAsStream("/assets/blsquadmod/MagmaWaveCaps.otf")));
-            font1.drawString("Warn", this.width/2 - font1.getWidth("Warn")/2, this.height/2-105, Color.WHITE.getRGB());
-        } catch (FontFormatException e)
-        {
-            e.printStackTrace();
-        }
-        catch (IOException e)
-        {
-            e.printStackTrace();
-        }
+        BlSquadMain.font.drawString("Warn", this.width/2 - BlSquadMain.font.getWidth("Warn")/2, this.height/2-105, Color.WHITE.getRGB());
         if(!playerName.getText().equals("")) {
             if (!reason.getText().equals("")) {
                 warn.enabled = true;

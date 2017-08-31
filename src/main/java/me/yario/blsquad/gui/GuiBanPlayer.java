@@ -3,7 +3,6 @@ package me.yario.blsquad.gui;
 import cpw.mods.fml.client.config.GuiCheckBox;
 import cpw.mods.fml.common.gameevent.TickEvent;
 import me.yario.blsquad.BlSquadMain;
-import me.yario.blsquad.utils.FontUtils;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiPlayerInfo;
 import net.minecraft.client.gui.GuiScreen;
@@ -95,17 +94,7 @@ public class GuiBanPlayer extends GuiScreen {
         else
             ban.enabled = false;
 
-        try {
-            FontUtils font1 = new FontUtils(Font.createFont(Font.TRUETYPE_FONT, getClass().getResourceAsStream("/assets/blsquadmod/MagmaWaveCaps.otf")));
-            font1.drawString("Ban", this.width/2 - font1.getWidth("Ban")/2, this.height/2-105, Color.WHITE.getRGB());
-        } catch (FontFormatException e)
-        {
-            e.printStackTrace();
-        }
-        catch (IOException e)
-        {
-            e.printStackTrace();
-        }
+        BlSquadMain.font.drawString("Ban", this.width/2 - BlSquadMain.font.getWidth("Ban")/2, this.height/2-105, Color.WHITE.getRGB());
         drawString(this.mc.fontRenderer,"Player name:", this.width/2-204, this.height/2-63 -this.mc.fontRenderer.FONT_HEIGHT, Color.WHITE.getRGB());
         drawString(this.mc.fontRenderer,"Reason:", this.width/2+4, this.height/2-63 -this.mc.fontRenderer.FONT_HEIGHT, Color.WHITE.getRGB());
         drawString(this.mc.fontRenderer,"Date:", this.width/2-204, this.height/2-16 - this.mc.fontRenderer.FONT_HEIGHT -2, Color.WHITE.getRGB());
